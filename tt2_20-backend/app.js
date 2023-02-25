@@ -1,5 +1,13 @@
-var pool = require('./db/db_conn.js')
+var conn = require('./db/db_conn.js')
+var dbsetup = require('./db/setup.js')
 
+<<<<<<< HEAD
+=======
+//pool.query("CREATE TABLE test1 (col1 INT);")
+//pool.query("INSERT INTO test1 (col1) VALUES (1);")
+//conn.query("SELECT * FROM test1;", (err, rows) => console.log(rows))
+dbsetup()
+>>>>>>> 4792c2c4b9c3dded2358bc9ee9a6a6254652b96a
 
 var createError = require('http-errors');
 var express = require('express');
