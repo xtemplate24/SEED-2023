@@ -1,4 +1,15 @@
-import { TextField, Button, Box } from "@mui/material";
+import React from "react";
+import {
+  TextField,
+  Button,
+  Box,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 
 const SignUp = () => {
@@ -8,11 +19,20 @@ const SignUp = () => {
       password: "",
       firstName: "",
       lastName: "",
+      age: "",
     },
   });
 
   const signUp = (data) => {
     console.log(data);
+  };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   return (
@@ -56,15 +76,33 @@ const SignUp = () => {
             control={control}
             defaultValue=""
             render={({ field: { onChange, value }, fieldState: { error } }) => (
-              <TextField
-                variant="outlined"
-                value={value}
-                onChange={onChange}
-                error={!!error}
-                helperText={error ? error.message : null}
-                required={true}
-                type="password"
-              />
+              <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                  Password
+                </InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={showPassword ? "text" : "password"}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label="Password"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                  required={true}
+                />
+              </FormControl>
             )}
             rules={{
               required: "Password is required",
@@ -118,6 +156,29 @@ const SignUp = () => {
                 message: "Last name should contain only alphabets",
               },
               required: "Last name is required",
+            }}
+          />
+        </div>
+        <div>
+          <label>Age:</label>
+          <Controller
+            name="age"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                variant="outlined"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                helperText={error ? error.message : null}
+                required={true}
+                type="number"
+              />
+            )}
+            rules={{
+              validate: (value) => value > 0 || "Minimum age is 1",
+              required: "Age is required",
             }}
           />
         </div>
