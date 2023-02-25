@@ -1,5 +1,8 @@
 var pool = require('./db/db_conn.js')
 
+const result = pool.query("SELECT * FROM test")
+console.log(result[0])
+
 var createError = require('http-errors');
 var express = require('express');
 const dotenv = require('dotenv').config()
@@ -23,6 +26,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
 
 const port = process.env.PORT;
 app.listen(port, () => {
@@ -52,3 +58,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
+
