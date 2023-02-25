@@ -66,6 +66,30 @@ router.post("/login", (req, res) => {
   );
 });
 
+router.get("/getPoliciesById", (req, res) => {
+  let username = req.body.eid;
+  conn.query(
+    "SELECT DISTINCT InsuranceType from insurancepolicies where employeeid = ?",
+    [username],
+    function (err, data) {
+      if (err) return next(new AppError(err, 500));
+      console.log(data)
+        let list_of_policy_types = []
+        for (i in data){
+          console.log(data[i]["InsuranceType"])
+          list_of_policy_types.push(data[i]["InsuranceType"])
+        }
+
+        res.status(200).json({
+          status: "success",
+          
+          data: list_of_policy_types,
+        });
+     
+    }
+  );
+});
+
 router.put("/editclaim", (req, res) => {
   let claimId = req.body.claimId;
   let insuranceId = req.body.insuranceId;
