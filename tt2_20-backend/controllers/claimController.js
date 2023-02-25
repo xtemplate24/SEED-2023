@@ -43,12 +43,52 @@ exports.insert_claim = (req, res) => {
 };
 
 exports.update_claim = (req, res) => {
-    res.send("NOT IMPLEMENTED: update exsiting claim");
-};
+    let claimId = req.body.claimId;
+    let insuranceId = req.body.insuranceId;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
+    let expenseDate = req.body.expenseDate;
+    let amount = req.body.amount;
+    let purpose = req.body.purpose;
+    let followUp = req.body.followUp;
+    let previousClaimId = req.body.previousClaimId;
+    let status = req.body.status;
+    var today = new Date();
+    let lastEditedClaimDate = String(today)
+    console.log(lastEditedClaimDate)
+  
+    console.log(req.body);
+  
+    conn.query(
+      "UPDATE insuranceclaims SET FirstName = ?, LastName = ?, Amount = ?, Purpose = ?, FollowUp = ?, PreviousClaimID = ?, Status = ?, LastEditedClaimDate = ? WHERE ClaimID = ?",
+      // "UPDATE insuranceclaims SET FirstName = ?, LastName = ? WHERE ClaimID = ?",
+  
+      [
+        firstName,
+        lastName,
+        amount,
+        purpose,
+        followUp,
+        previousClaimId,
+        status,
+        lastEditedClaimDate,
+        claimId,
+      ],
+      function (err, data) {
+        // if (err) return next(new AppError(err, 500));
+        console.log(err);
+        console.log(data);
+        res.status(200).json({
+          status: "change success",
+          data: data,
+        });
+      }
+    );
+  };
 
 exports.delete_claim = (req, res) => {
     conn.query("DELETE FROM insuranceclaims WHERE claimid = ?",
-        [req.body.claimId],
+        [req.params.claimId],
         (err, result) => {
             if (err) throw err
             res.send(200)
