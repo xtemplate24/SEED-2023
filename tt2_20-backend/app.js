@@ -26,8 +26,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors());
 
-
-
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
