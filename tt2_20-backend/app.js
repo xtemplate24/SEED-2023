@@ -1,3 +1,8 @@
+var pool = require('./db/db_conn.js')
+
+const result = pool.query("SELECT * FROM test")
+console.log(result)
+
 var createError = require('http-errors');
 var express = require('express');
 const dotenv = require('dotenv').config()
@@ -42,5 +47,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;
