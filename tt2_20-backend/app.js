@@ -1,7 +1,4 @@
-var pool = require('./db/db_conn.js')
-
-const result = pool.query("SELECT * FROM test")
-console.log(result[0])
+var conn = require('./db/db_conn.js')
 
 var createError = require('http-errors');
 var express = require('express');
@@ -13,7 +10,6 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var claimsRouter = require('./routes/claims');
-
 
 var app = express();
 
