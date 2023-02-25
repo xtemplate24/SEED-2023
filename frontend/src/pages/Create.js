@@ -10,13 +10,14 @@ const Create = () => {
 
   const handleOnChange = () => {
     setFollowUpClaim(!followUpClaim);
+    console.log(followUpClaim);
   };
 
-  const formatNumber = (num) => {
+  /* const formatNumber = (num) => {
     num = num.formatNumber(num, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    });
+    }); */
   };
   return (
     <div className="App">
@@ -52,7 +53,7 @@ const Create = () => {
       <input
         type="number"
         value={amount}
-        onChange={(e) => formatNumber(e.target.value)}
+        onChange={(e) => setAmount(e.target.value)}
       />
       <br />
       <label>Follow-Up Claim?</label>
