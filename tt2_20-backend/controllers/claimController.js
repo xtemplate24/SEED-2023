@@ -1,12 +1,12 @@
 var conn = require('../db/db_conn.js')
 
 exports.get_claims = (req, res) => {
-    let claims = []
-    conn.query("SELECT ic.* FROM user u JOIN insurancepolicies ip ON u.employeeid = ip.employeeid JOIN insuranceclaims ic ON ip.insuranceid = ic.insuranceid WHERE u.employeeid = ?",
+    conn.query("SELECT ic.claimId, ic.insuranceId, ic.firstName, ic.lastName, STR_TO_DATE(ic.expenseDate, '%Y-%m-%d') expenseDate, ic.amount, ic.purpose, IF(ic.followUp = 1, 'TRUE', 'FALSE') followUp, ic.previousClaimId, ic.status, STR_TO_DATE(ic.lastEditedClaimDate, '%Y-%m-%d') lastEditedClaimDate, ip.insuranceId, ip.insuranceType FROM user u JOIN insurancepolicies ip ON u.employeeid = ip.employeeid JOIN insuranceclaims ic ON ip.insuranceid = ic.insuranceid WHERE u.employeeid = ?",
         [req.params.employeeId],
-        (err, result) => claims = result)
-    console.log(claims)
-    res.send("NOT IMPLEMENTED: get all claim based on insurance id");
+        (err, result) => {
+            if (err) throw err
+            res.send(result)
+        })
 };
 
 exports.insert_claim = (req, res) => {
@@ -47,5 +47,10 @@ exports.update_claim = (req, res) => {
 };
 
 exports.delete_claim = (req, res) => {
-    res.send("NOT IMPLEMENTED: delete existing claim");
+    conn.query("DELETE FROM insuranceclaims WHERE claimid = ?",
+        [req.body.claimId],
+        (err, result) => {
+            if (err) throw err
+            res.send(200)
+        })
 };

@@ -6,12 +6,11 @@ const conn = require("../db/db_conn");
 
 //CREATE API
 router.post("/signup", (req, res) => {
-
-  console.log(req.body)
+  console.log(req.body);
   let username = req.body.username;
   let password = req.body.password;
-  let firstname = req.body.firstname;
-  let lastname = req.body.lastname;
+  let firstname = req.body.firstName;
+  let lastname = req.body.lastName;
   let age = req.body.age;
 
   const values = [username, password, firstname, lastname, age];
@@ -63,6 +62,74 @@ router.post("/login", (req, res) => {
           status: "incorrect username or password",
         });
       }
+    }
+  );
+});
+
+router.get("/getPoliciesById", (req, res) => {
+  let username = req.body.eid;
+  conn.query(
+    "SELECT DISTINCT InsuranceType from insurancepolicies where employeeid = ?",
+    [username],
+    function (err, data) {
+      if (err) return next(new AppError(err, 500));
+      console.log(data)
+        let list_of_policy_types = []
+        for (i in data){
+          console.log(data[i]["InsuranceType"])
+          list_of_policy_types.push(data[i]["InsuranceType"])
+        }
+
+        res.status(200).json({
+          status: "success",
+          
+          data: list_of_policy_types,
+        });
+     
+    }
+  );
+});
+
+router.put("/editclaim", (req, res) => {
+  let claimId = req.body.claimId;
+  let insuranceId = req.body.insuranceId;
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  let expenseDate = req.body.expenseDate;
+  let amount = req.body.amount;
+  let purpose = req.body.purpose;
+  let followUp = req.body.followUp;
+  let previousClaimId = req.body.previousClaimId;
+  let status = req.body.status;
+  var today = new Date();
+  let lastEditedClaimDate = String(today)
+  console.log(lastEditedClaimDate)
+
+  console.log(req.body);
+
+  conn.query(
+    "UPDATE insuranceclaims SET FirstName = ?, LastName = ?, Amount = ?, Purpose = ?, FollowUp = ?, PreviousClaimID = ?, Status = ?, LastEditedClaimDate = ? WHERE ClaimID = ?",
+    // "UPDATE insuranceclaims SET FirstName = ?, LastName = ? WHERE ClaimID = ?",
+
+    [
+      firstName,
+      lastName,
+      amount,
+      purpose,
+      followUp,
+      previousClaimId,
+      status,
+      lastEditedClaimDate,
+      claimId,
+    ],
+    function (err, data) {
+      // if (err) return next(new AppError(err, 500));
+      console.log(err);
+      console.log(data);
+      res.status(200).json({
+        status: "change success",
+        data: data,
+      });
     }
   );
 });
