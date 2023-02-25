@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+const dotenv = require('dotenv').config()
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -19,6 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+})
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
