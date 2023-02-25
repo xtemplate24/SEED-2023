@@ -1,4 +1,6 @@
+import axios from "axios";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -13,7 +15,9 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm, Controller } from "react-hook-form";
 
 const SignUp = () => {
-  const { handleSubmit, control } = useForm({
+  const navigate = useNavigate();
+
+  const { handleSubmit, control, setError } = useForm({
     defaultValues: {
       username: "",
       password: "",
@@ -24,7 +28,19 @@ const SignUp = () => {
   });
 
   const signUp = (data) => {
-    console.log(data);
+    axios
+      .post("http://localhost:8000/users/signUp", data, {
+        mode: "cors",
+      })
+      .then((res) => {
+        console.log(res.data);
+        navigate("/");
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error);
+        }
+      });
   };
 
   const [showPassword, setShowPassword] = React.useState(false);
