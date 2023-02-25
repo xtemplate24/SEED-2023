@@ -6,8 +6,7 @@ const conn = require("../db/db_conn");
 
 //CREATE API
 router.post("/signup", (req, res) => {
-
-  console.log(req.body)
+  console.log(req.body);
   let username = req.body.username;
   let password = req.body.password;
   let firstname = req.body.firstName;
@@ -79,19 +78,27 @@ router.post("/editclaim", (req, res) => {
   let previousClaimId = req.body.previousClaimId;
   let status = req.body.status;
 
-  console.log(req.body)
-
+  console.log(req.body);
 
   conn.query(
     "UPDATE insuranceclaims SET FirstName = ?, LastName = ?, Amount = ?, Purpose = ?, FollowUp = ?, PreviousClaimID = ?, Status = ? WHERE ClaimID = ?",
     // "UPDATE insuranceclaims SET FirstName = ?, LastName = ? WHERE ClaimID = ?",
-   
-    [firstName,lastName,amount,purpose,followUp,previousClaimId,status,claimId],
+
+    [
+      firstName,
+      lastName,
+      amount,
+      purpose,
+      followUp,
+      previousClaimId,
+      status,
+      claimId,
+    ],
     function (err, data) {
       // if (err) return next(new AppError(err, 500));
-      console.log(err)
-      console.log(data)
-      res.status(401).json({
+      console.log(err);
+      console.log(data);
+      res.status(200).json({
         data: data,
       });
     }
