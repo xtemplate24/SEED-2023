@@ -1,7 +1,7 @@
 var pool = require('./db/db_conn.js')
 
 const result = pool.query("SELECT * FROM test")
-console.log(result)
+console.log(result[0])
 
 var createError = require('http-errors');
 var express = require('express');
