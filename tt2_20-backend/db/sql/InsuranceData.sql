@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `InsuranceClaims`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InsuranceClaims` (
-  `ClaimID` int NOT NULL,
+  `ClaimID` int NOT NULL AUTO_INCREMENT,
   `InsuranceID` int NOT NULL,
   `FirstName` varchar(50) NOT NULL,
   `LastName` varchar(50) NOT NULL,
@@ -60,7 +60,7 @@ DROP TABLE IF EXISTS `InsurancePolicies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `InsurancePolicies` (
-  `InsuranceID` int NOT NULL,
+  `InsuranceID` int NOT NULL AUTO_INCREMENT,
   `EmployeeID` int NOT NULL,
   `InsuranceType` varchar(100) NOT NULL,
   `PolicyStartDate` varchar(255) NOT NULL,
@@ -92,7 +92,7 @@ DROP TABLE IF EXISTS `User`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `User` (
-  `EmployeeID` int NOT NULL,
+  `EmployeeID` int NOT NULL AUTO_INCREMENT,
   `Password` varchar(20) NOT NULL,
   `FirstName` varchar(50) NOT NULL,
   `LastName` varchar(50) NOT NULL,
