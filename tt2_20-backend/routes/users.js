@@ -66,7 +66,7 @@ router.post("/login", (req, res) => {
   );
 });
 
-router.post("/editclaim", (req, res) => {
+router.put("/editclaim", (req, res) => {
   let claimId = req.body.claimId;
   let insuranceId = req.body.insuranceId;
   let firstName = req.body.firstName;
@@ -99,6 +99,7 @@ router.post("/editclaim", (req, res) => {
       console.log(err);
       console.log(data);
       res.status(200).json({
+        status: "change success",
         data: data,
       });
     }
