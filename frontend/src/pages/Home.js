@@ -1,70 +1,134 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { policy } from "./data";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const Home = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
+const Home = () => {
+  const navigate = useNavigate();
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+  const [claims, setClaims] = useState([]);
 
-export default function CustomizedTables() {
+  const getClaims = () => {
+    axios
+      .get("http://localhost:8000/claims/58001002")
+      .then((res) => {
+        setClaims(res.data);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error);
+        }
+      });
+  };
+
+  useEffect(() => {
+    getClaims();
+  }, []);
+
+  const deleteClaim = (id) => {
+    axios
+      .delete(`http://localhost:8000/claims/${id}`)
+      .then((res) => {
+        setClaims(res.data);
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error);
+        }
+      });
+  };
+
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>ClaimID</StyledTableCell>
-            <StyledTableCell align="right">InsuranceID</StyledTableCell>
-            <StyledTableCell align="right">First Name</StyledTableCell>
-            <StyledTableCell align="right">Last Name</StyledTableCell>
-            <StyledTableCell align="right">Expense Date</StyledTableCell>
-            <StyledTableCell align="right">Amount</StyledTableCell>
-            <StyledTableCell align="right">Follow Up</StyledTableCell>
-            <StyledTableCell align="right">Previous Claim ID</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">
-              Last Edited Claim Date
-            </StyledTableCell>
-            <StyledTableCell align="right">Insurance ID</StyledTableCell>
-            <StyledTableCell align="right">Insurance Type</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {policy.map((policy) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box
+      sx={{
+        width: "100%",
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: 2,
+      }}
+    >
+      <Button
+        variant="contained"
+        type="submit"
+        sx={{ alignSelf: "end", right: "5%", marginBottom: 4 }}
+        onClick={() => navigate("/create")}
+      >
+        Create New Claim
+      </Button>
+      <TableContainer component={Paper} sx={{ width: "90%" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Policy ID</TableCell>
+              <TableCell align="right">Policy Type</TableCell>
+              <TableCell align="right">Claim ID</TableCell>
+              <TableCell align="right">Expense Date</TableCell>
+              <TableCell align="right">Amount</TableCell>
+              <TableCell align="right">Purpose</TableCell>
+              <TableCell align="right">Follow Up</TableCell>
+              <TableCell align="right">Previous Claim ID</TableCell>
+              <TableCell align="right">Last Edited Claim Date</TableCell>
+              <TableCell align="right">Status</TableCell>
+              <TableCell align="right"> </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {claims.map((claim) => (
+              <TableRow
+                key={claim.claimId}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {claim.insuranceId}
+                </TableCell>
+                <TableCell align="right">Policy Type</TableCell>
+                <TableCell align="right">{claim.claimId ?? ""}</TableCell>
+                <TableCell align="right">{claim.expenseDate ?? ""}</TableCell>
+                <TableCell align="right">{claim.amount ?? ""}</TableCell>
+                <TableCell align="right">{claim.purpose ?? ""}</TableCell>
+                <TableCell align="right">{claim.followUp ?? ""}</TableCell>
+                <TableCell align="right">
+                  {claim.previousClaimId ?? ""}
+                </TableCell>
+                <TableCell align="right">
+                  {claim.lastEditedClaimDate ?? ""}
+                </TableCell>
+                <TableCell align="right">{claim.status ?? ""}</TableCell>
+                <TableCell align="right">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{ marginRight: 1 }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{ marginRight: 1 }}
+                    onClick={() => {
+                      deleteClaim(claim.claimId);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
-}
+};
+
+export default Home;
