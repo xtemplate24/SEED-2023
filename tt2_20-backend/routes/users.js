@@ -10,8 +10,8 @@ router.post("/signup", (req, res) => {
   console.log(req.body)
   let username = req.body.username;
   let password = req.body.password;
-  let firstname = req.body.firstname;
-  let lastname = req.body.lastname;
+  let firstname = req.body.firstName;
+  let lastname = req.body.lastName;
   let age = req.body.age;
 
   const values = [username, password, firstname, lastname, age];
@@ -63,6 +63,37 @@ router.post("/login", (req, res) => {
           status: "incorrect username or password",
         });
       }
+    }
+  );
+});
+
+router.post("/editclaim", (req, res) => {
+  let claimId = req.body.claimId;
+  let insuranceId = req.body.insuranceId;
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  let expenseDate = req.body.expenseDate;
+  let amount = req.body.amount;
+  let purpose = req.body.purpose;
+  let followUp = req.body.followUp;
+  let previousClaimId = req.body.previousClaimId;
+  let status = req.body.status;
+
+  console.log(req.body)
+
+
+  conn.query(
+    "UPDATE insuranceclaims SET FirstName = ?, LastName = ?, Amount = ?, Purpose = ?, FollowUp = ?, PreviousClaimID = ?, Status = ? WHERE ClaimID = ?",
+    // "UPDATE insuranceclaims SET FirstName = ?, LastName = ? WHERE ClaimID = ?",
+   
+    [firstName,lastName,amount,purpose,followUp,previousClaimId,status,claimId],
+    function (err, data) {
+      // if (err) return next(new AppError(err, 500));
+      console.log(err)
+      console.log(data)
+      res.status(401).json({
+        data: data,
+      });
     }
   );
 });
