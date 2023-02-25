@@ -1,3 +1,7 @@
+exports.get_claims = (req, res) => {
+    res.send("NOT IMPLEMENTED: get all claim based on insurance id");
+};
+
 exports.insert_claim = (req, res) => {
   res.send("NOT IMPLEMENTED: insert new claim");
 };
