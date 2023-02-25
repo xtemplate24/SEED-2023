@@ -17,7 +17,7 @@ import { useForm, Controller } from "react-hook-form";
 const SignUp = () => {
   const navigate = useNavigate();
 
-  const { handleSubmit, control, setError } = useForm({
+  const { handleSubmit, control, watch } = useForm({
     defaultValues: {
       username: "",
       password: "",
@@ -27,13 +27,15 @@ const SignUp = () => {
     },
   });
 
+  const [username] = watch(["username"]);
+
   const signUp = (data) => {
     axios
       .post("http://localhost:8000/users/signUp", data, {
         mode: "cors",
       })
       .then((res) => {
-        console.log(res.data);
+        sessionStorage.setItem("eid", username);
         navigate("/");
       })
       .catch(function (error) {
