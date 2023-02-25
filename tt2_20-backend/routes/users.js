@@ -14,10 +14,6 @@ router.get('/create', function(req, res, next) {
   
 });
 
-router.listen(3000, () => {
-  console.log('Example app listening on port 3000!')
-})
-
 //Editted to get the login page
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
