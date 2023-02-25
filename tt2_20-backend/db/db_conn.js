@@ -1,13 +1,13 @@
 var mysql = require('mysql2')
 
-const pool = mysql.createPool(
+const conn = mysql.createConnection(
     {
         host: 'localhost',
         port: '3306',
         user: 'root',
-        password: 'root',
-        database: 'tt2_20'
+        password: '',
+        database: 'insurancedata'
     }
 )
 
-module.exports = pool
+module.exports = conn

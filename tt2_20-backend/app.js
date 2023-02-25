@@ -25,6 +25,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
@@ -51,3 +54,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
+
