@@ -88,7 +88,7 @@ exports.update_claim = (req, res) => {
 
 exports.delete_claim = (req, res) => {
     conn.query("DELETE FROM insuranceclaims WHERE claimid = ?",
-        [req.params.claimId],
+        [req.body.claimId],
         (err, result) => {
             if (err) throw err
             res.send(200)
