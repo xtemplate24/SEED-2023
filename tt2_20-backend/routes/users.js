@@ -6,11 +6,13 @@ const conn = require("../db/db_conn");
 
 //CREATE API
 router.post("/signup", (req, res) => {
-  let username = req.query.username;
-  let password = req.query.password;
-  let firstname = req.query.firstname;
-  let lastname = req.query.lastname;
-  let age = req.query.age;
+
+  console.log(req.body)
+  let username = req.body.username;
+  let password = req.body.password;
+  let firstname = req.body.firstname;
+  let lastname = req.body.lastname;
+  let age = req.body.age;
 
   const values = [username, password, firstname, lastname, age];
 
@@ -18,7 +20,6 @@ router.post("/signup", (req, res) => {
     "SELECT * FROM user WHERE EmployeeID = ?",
     [username],
     function (err, data) {
-      console.log(data)
       if (data.length == 0) {
         conn.query(
           "INSERT INTO user (EmployeeID, Password, FirstName, LastName, Age) VALUES(?)",
@@ -40,8 +41,8 @@ router.post("/signup", (req, res) => {
 
 //Login API
 router.post("/login", (req, res) => {
-  let username = req.query.username;
-  let password = req.query.password;
+  let username = req.body.username;
+  let password = req.body.password;
   console.log(username, password);
   conn.query(
     "SELECT * FROM user WHERE EmployeeID = ?",
