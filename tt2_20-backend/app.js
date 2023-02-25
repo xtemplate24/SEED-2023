@@ -1,10 +1,4 @@
 var conn = require('./db/db_conn.js')
-var dbsetup = require('./db/setup.js')
-
-//pool.query("CREATE TABLE test1 (col1 INT);")
-//pool.query("INSERT INTO test1 (col1) VALUES (1);")
-//conn.query("SELECT * FROM test1;", (err, rows) => console.log(rows))
-dbsetup()
 
 var createError = require('http-errors');
 var express = require('express');
@@ -15,6 +9,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const router = require('./routes/index');
 
 var app = express();
 
