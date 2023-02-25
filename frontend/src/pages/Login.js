@@ -17,14 +17,21 @@ import {
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { handleSubmit, control } = useForm({
+  const navigate = useNavigate();
+
+  const { handleSubmit, control, watch } = useForm({
     defaultValues: {
       username: "",
       password: "",
     },
   });
+
+  const [username] = watch(["username"]);
+
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -35,7 +42,19 @@ const Login = () => {
     setOpen(false);
   };
   const Login = (data) => {
-    console.log(data);
+    axios
+      .post("http://localhost:8000/users/login", data, {
+        mode: "cors",
+      })
+      .then((res) => {
+        sessionStorage.setItem("eid", username);
+        navigate("/");
+      })
+      .catch(function (error) {
+        if (error.response) {
+          console.log(error);
+        }
+      });
   };
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -107,6 +126,11 @@ const Login = () => {
                     </InputAdornment>
                   }
                   label="Password"
+                  value={value}
+                  onChange={onChange}
+                  error={!!error}
+                  helperText={error ? error.message : null}
+                  required={true}
                 />
               </FormControl>
             )}
