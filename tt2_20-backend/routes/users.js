@@ -77,11 +77,14 @@ router.put("/editclaim", (req, res) => {
   let followUp = req.body.followUp;
   let previousClaimId = req.body.previousClaimId;
   let status = req.body.status;
+  var today = new Date();
+  let lastEditedClaimDate = String(today)
+  console.log(lastEditedClaimDate)
 
   console.log(req.body);
 
   conn.query(
-    "UPDATE insuranceclaims SET FirstName = ?, LastName = ?, Amount = ?, Purpose = ?, FollowUp = ?, PreviousClaimID = ?, Status = ? WHERE ClaimID = ?",
+    "UPDATE insuranceclaims SET FirstName = ?, LastName = ?, Amount = ?, Purpose = ?, FollowUp = ?, PreviousClaimID = ?, Status = ?, LastEditedClaimDate = ? WHERE ClaimID = ?",
     // "UPDATE insuranceclaims SET FirstName = ?, LastName = ? WHERE ClaimID = ?",
 
     [
@@ -92,6 +95,7 @@ router.put("/editclaim", (req, res) => {
       followUp,
       previousClaimId,
       status,
+      lastEditedClaimDate,
       claimId,
     ],
     function (err, data) {
