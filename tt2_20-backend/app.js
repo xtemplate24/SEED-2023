@@ -1,5 +1,11 @@
+var pool = require('./db/db_conn.js')
+
+const result = pool.query("SELECT * FROM test")
+console.log(result[0])
+
 var createError = require('http-errors');
 var express = require('express');
+const dotenv = require('dotenv').config()
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -19,6 +25,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const port = process.env.PORT;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`)
+})
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -37,5 +47,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
 
 module.exports = app;
