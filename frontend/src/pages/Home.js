@@ -36,7 +36,7 @@ const Home = () => {
     axios
       .delete(`http://localhost:8000/claims/${id}`)
       .then((res) => {
-        setClaims(res.data);
+        getClaims();
       })
       .catch(function (error) {
         if (error.response) {
@@ -108,6 +108,7 @@ const Home = () => {
                     variant="contained"
                     type="submit"
                     sx={{ marginRight: 1 }}
+                    onClick={() => navigate("/edit")}
                   >
                     Edit
                   </Button>
